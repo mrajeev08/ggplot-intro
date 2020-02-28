@@ -1,0 +1,322 @@
+---
+title: "Introduction to plotting with ggplot in R"
+author: "Malavika Rajeev"
+date: "6/23/2019"
+output:
+  ioslides_presentation: 
+    widescreen: true
+    smaller: true
+  theme: simplex
+  beamer_presentation: default
+  slidy_presentation: default
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE, out.width = "55%")
+```
+
+## Why vizualize data?
+1. To explore relationships in our data
+2. To communicate/present what we found
+
+```{r  out.width = "70%", echo = FALSE, fig.align='center'}
+include_graphics("figs/nightengale.jpg")
+```
+
+## Why ggplot?
+- Easy to quickly generate plots which can help us do # 1
+- Flexible and good defaults which help us with # 2
+
+## Packages we need
+```{r cars, echo = TRUE}
+# install.packages("ggplot2")
+# install.packages("tidyverse")
+library(ggplot2)
+```
+
+## The basics of the ggplot = the dataframe
+- Classic R dataset
+```{r}
+head(iris)
+```
+
+## The basics of the ggplot = the dataframe
+- A dataframe where each row corresponds to a record ('wide format') and variables are columns
+```{r}
+ggplot(data = iris)
+```
+  
+  **Creates a blank plot. We need to decide what variables we want to plot.**
+
+## The basics of the ggplot = the aes
+- aes = the aesthetics.
+```{r}
+head(iris)
+```
+  
+  **Let's look at the relationship between the variables Sepal.Length and Sepal.Width.**
+
+## The basics of the ggplot = the aes
+- aes = the aesthetics (what we want to plot)
+```{r}
+## Let's try the Sepal.Length vs. the Sepal.Width (x, y plot)
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width)) 
+```
+  
+  **Still blank! We need to decide what kind of plot to use.**
+
+## How do we figure out what kind of plot to use?
+**We need to think about how best to visualize this data.**
+```{r}
+summary(iris)
+```
+
+## How do we figure out what kind of plot to use?
+**We need to think about what we want to show.**
+
+Quick excercise: try drawing with pen and paper what you think these plots might look like: 
+  
+  
+- Relationship between Sepal.Length and Sepal.Width 
+- Distribution of Petal.Length
+- Comparing the means of Sepal.Length by Species
+
+## How do we figure out what kind of plot to use?
+** We need to think about what we want to show.**
+
+Quick excercise: try drawing with pen and paper what you think these plots might look like:
+  
+  
+- Relationship between Sepal.Length and Sepal.Width 
+- Distribution of Petal.Length
+- Comparing the means of Sepal.Length by Species
+
+**Hint** 
+Here are the options: Histogram - XY Scatter plot - Boxplot.
+
+## The basics of ggplot = the geom
+- Geom = geometry 
+  
+- The 'geom_' functions choose what kind of graph we want to show:
+  - **geom_point (point graphs, xy relationships)**
+  - **geom_histogram (distribution of a continuous variable)**
+  - **geom_boxplot (comparing means of groups)**
+  - geom_col/geom_bar
+  - geom_line (timeseries)
+  - geom_tile (heatmaps)
+  - geom_polygon (mapping)
+
+
+## geom_point: XY Relationship
+```{r}
+## add the geom that we want
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point()
+```
+  
+**Is there anything you notice?**
+
+## Adding other aesthetics to help visualize potential relationships
+**Using color, we want to differentiate the points by species.**
+```{r}
+## 
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  geom_point()
+```
+  
+## Adding other aesthetics to help visualize potential relationships
+- The common aesthetics you can add:
+  - color 
+  - fill 
+  - shape
+  - linewidth
+  - alpha (transparency)
+
+## Adding other aesthetics to help visualize potential relationships
+**Now try it with shape and fill.**
+```{r}
+## 
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, shape = Species)) +
+  geom_point()
+```
+  
+  **Need to trouble shoot a bit to see what the best option is for a given geom.**
+
+## Specifying things within vs. outside the aes
+- Outside aes
+```{r}
+## try it outside
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width), color = Species) +
+  geom_point()
+```
+
+## Specifying things within vs. outside the aes
+- As part of geom
+```{r}
+## add it to the geom 
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point(color = "red")
+
+```
+
+## Specifying things within vs. outside the aes
+- Inside aes = the way to specify an aesthetic by a variable in the dataframe.
+```{r}
+## 
+ggplot(data = iris, aes(x = Sepal.Length, 
+                        y = Sepal.Width, color = Species)) +
+  geom_point()
+```
+  
+  **Try playing around with the aesthetics and see what you get!**
+
+## Going a bit further: comparing means
+```{r}
+## 
+ggplot(data = iris, aes(x = Species, 
+                        y = Sepal.Width)) +
+  geom_boxplot()
+```
+  
+  - boxplots visualize the mean (in ggplot, also the 25 and 75% quantiles and any points outside of those--considered outliers)
+
+##  Going a bit further: distributions
+```{r}
+## The histogram
+ggplot(data = iris, aes(x = Sepal.Length)) +
+  geom_histogram()
+```
+  
+**Play around with the binwidth option to see what the best bin is**. 
+
+##  Going a bit further: distributions by categorical variable
+```{r}
+## The histogram
+ggplot(data = iris, aes(x = Sepal.Length, fill = Species)) +
+    geom_histogram(binwidth = 0.25)
+```
+
+##  Going a bit further: distributions by categorical variable
+```{r}
+## The density plot
+ggplot(data = iris, aes(x = Sepal.Length, fill = Species)) +
+  geom_density()
+```
+
+## Going a bit further: creating multiple plots with facetting
+- If we want to split this plot by species to make it easier to see the distributions
+```{r}
+## By fill
+ggplot(data = iris, aes(x = Sepal.Length, fill = Species)) +
+  geom_histogram(binwidth = 0.25)
+```
+
+## Going a bit further: creating multiple plots with facetting
+```{r}
+## By facetting
+ggplot(data = iris, aes(x = Sepal.Length)) +
+  geom_histogram(binwidth = 0.25) +
+  facet_wrap(~ Species)
+```
+
+## Customizing our ggplot
+- We'll save our ggplot as an object called base.
+  
+```{r}
+base <- ggplot(data = iris, aes(x = Species, y = Sepal.Length, color = Species)) +
+  geom_boxplot()
+```
+
+## Customizing: labels
+- Then we can change specific components of it by adding customizations. 
+  
+```{r}
+base +
+  xlab("Sepal Length") +
+  ylab("Sepal Width")
+```
+
+## Customizing: color scales
+```{r}
+base +
+  xlab("Sepal Length") +
+  ylab("Sepal Width") +
+  scale_color_manual(values = c("purple", "blue", "lightblue"), name = "Species of Iris")
+```
+
+## Customizing: color scales
+  - The scale_ functions help us specify what colors we want to use
+    - scale_fill_gradient
+    - scale_fill_continuous
+  - The viridis color scales are a good option to try for continuous variables! (scale_fill_viridis)
+  
+## Customizing: themes
+```{r}
+base +
+  theme_bw()
+```
+  
+  **Try theme_dark and theme_classic.**
+
+## Saving our plots
+```{r}
+base <- ggplot(data = iris, aes(x = Species, y = Sepal.Width, color = Species)) +
+  geom_boxplot() + 
+  xlab("Sepal Length") +
+  ylab("Sepal Width") +
+  scale_color_manual(values = c("purple", "blue", "pink"), name = "Species of Iris") +
+  theme_bw()
+
+ggsave("base_plot.pdf", base, device = "pdf")
+```
+
+## Customizing...the options are almost unlimited!
+- For most of the routine things you need to do, there is a way. To figure it out your best friend is stack exchange and the ggplot documentation!
+
+## Other considerations: communicating accurately and effectively
+- Anscombe's quartet
+  - Identical means, variance, and correlation, but when you plot it you see the differences.
+```{r  out.width = "50%", echo = FALSE, fig.align='center'}
+include_graphics("figs/anscombe.png")
+```
+
+## Other considerations: communicating accurately and effectively
+- Scales of axes: should they include zero?
+```{r  out.width = "50%", echo = FALSE, fig.align='left'}
+include_graphics("figs/axes_nozero.gif")
+```
+
+## Other considerations: communicating accurately and effectively
+- Scales of axes: should they include zero?
+```{r  out.width = "50%", echo = FALSE, fig.align='left'}
+include_graphics("figs/axes_woutzero.png")
+```
+
+## Other considerations: communicating accurately and effectively
+- Scales of axes: should they include zero?
+```{r  out.width = "50%", echo = FALSE, fig.align='left'}
+include_graphics("figs/axes_shouldzero.png")
+```
+
+## Other considerations: communicating accurately and effectively
+- Scales of axes: should they include zero?
+```{r  out.width = "50%", echo = FALSE, fig.align='left'}
+include_graphics("figs/axes_shouldnozero.jpeg")
+```
+
+## Excercises
+- Using the RxP data, plot:
+  - The distribution of Snout-vent length at emergence (SVL.initial)
+  - The correlation between Snout-vent length at emergence and at the end of the experiment (SVL.initial and SVL.final)
+  - The mean of SVL.final by Res 
+  - The mean of SVL.final by Pred
+  - Advanced: the mean difference between final and initial SVL for Res and Pred
+
+## How would you plot your own data?
+
+## More resources
+- General data vizualization: https://flowingdata.com
+- Vizualizing data with ggplot2: http://socviz.co
+- ggplot cheatsheet: https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
+- data carpentry course: https://datacarpentry.org/R-ecology-lesson/04-visualization-ggplot2.html
