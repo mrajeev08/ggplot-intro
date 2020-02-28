@@ -4,7 +4,7 @@ Antananarivo, Madagascar
 
 Slides for an introduction to ggplot tutorial for [MolEcol in R](https://www.mahaliana.org/molecol), a workshop on molecular ecology and epidemiology in R for Malagasy post-graduate students.  
 
-Also includes an [R coding challenge](Rchallenge.R) based on this lecture and others for students to complete, with [answer key](Rchallenge_answers.R). 
+Also includes an [R coding challenge](Rchallenge.R) based on this and other lectures from the course for students to complete, with [answer key](Rchallenge_answers.R). 
 
 Slides can be viewed [here](https://mrajeev08.github.io/ggplot-intro/).
 
