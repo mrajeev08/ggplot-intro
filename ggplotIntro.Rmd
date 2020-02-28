@@ -320,3 +320,10 @@ include_graphics("figs/axes_shouldnozero.jpeg")
 - Vizualizing data with ggplot2: http://socviz.co
 - ggplot cheatsheet: https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
 - data carpentry course: https://datacarpentry.org/R-ecology-lesson/04-visualization-ggplot2.html
+- stack exchange: https://stackoverflow.com/questions/tagged/ggplot2
+- ggplot documentation: https://ggplot2.tidyverse.org
+
+## References for images
+- [Anscombe's Quartet from Chapter 1: Look at Data; in Data Vizualization: a practical introduction](https://socviz.co/lookatdata.html)
+- [Florence Nightengale's Polar-Area Diagram](https://www.agnesscott.edu/lriddle/women/nightpiechart.htm)
+- [Figures on misleading axes](https://callingbullshit.org/tools/tools_misleading_axes.html)
