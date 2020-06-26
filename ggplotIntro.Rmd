@@ -334,8 +334,7 @@ include_graphics("figs/axes_shouldnozero.jpeg")
 - ggplot documentation: https://ggplot2.tidyverse.org
 
 ## References for images
-- [Anscombe's Quartet from Chapter 1: Look at Data; in Data Vizualization: a practical introduction](https://socviz.co/lookatdata.html)
+- [Anscombe's Quartet from Chapter 1 in *Data Vizualization: a practical introduction*](https://socviz.co/lookatdata.html)
 - [Florence Nightengale's Polar-Area Diagram](https://www.agnesscott.edu/lriddle/women/nightpiechart.htm)
 - [Figures on misleading axes](https://callingbullshit.org/tools/tools_misleading_axes.html)
-- [Palmer Penguins by Allison Horst]((https://github.com/allisonhorst/palmerpenguins)
-)
+- [Palmer Penguins by Allison Horst](https://github.com/allisonhorst/palmerpenguins)
