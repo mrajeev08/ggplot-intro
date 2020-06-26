@@ -18,6 +18,6 @@ Slides can be viewed [here](https://mrajeev08.github.io/ggplot-intro/).
 ) for a joyous alternative to Fisher's iris dataset*.
 
 
-*I originally used the `iris` dataset, published by Ronald Fisher in the Annals of Eugenics in 1936. While the data themselves pertain to flowers and were collected by botanist Edgar Anderson, we should not strip this data of the context in which it was used. And given the joyous alternative of penguins and many others, this is an easy thing to do. To de-iris your repos, [check this out](https://www.garrickadenbuie.com/blog/lets-move-on-from-iris/).*
+**I originally used the `iris` dataset, published by Ronald Fisher in the Annals of Eugenics in 1936. While the data themselves pertain to flowers and were collected by botanist Edgar Anderson, we should not strip this data of the context in which it was used. And given the joyous alternative of penguins and many others, this is an easy thing to do. To de-iris your repos, [check this out](https://www.garrickadenbuie.com/blog/lets-move-on-from-iris/).*
 
 
