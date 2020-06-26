@@ -1,7 +1,7 @@
 ---
 title: "Introduction to plotting with ggplot in R"
 author: "Malavika Rajeev"
-date: "6/23/2019"
+date: Updated "6/26/2020"
 output:
   ioslides_presentation: 
     widescreen: true
@@ -13,7 +13,7 @@ output:
 
 ```{r setup, include=FALSE}
 library(knitr)
-knitr::opts_chunk$set(echo = TRUE, out.width = "55%")
+knitr::opts_chunk$set(echo = TRUE, out.width = "55%", warning = FALSE)
 ```
 
 ## Why vizualize data?
@@ -32,19 +32,31 @@ include_graphics("figs/nightengale.jpg")
 ```{r cars, echo = TRUE}
 # install.packages("ggplot2")
 # install.packages("tidyverse")
+remotes::install_github("allisonhorst/palmerpenguins")
 library(ggplot2)
+library(palmerpenguins)
 ```
 
 ## The basics of the ggplot = the dataframe
-- Classic R dataset
+- A new classic data set: the Palmer Penguins!
+
+```{r  out.width = "50%", echo = FALSE, fig.align='center'}
+include_graphics("figs/lter_penguins.png")
+```
+[_*Artwork by @allison_horst*_](https://github.com/allisonhorst/palmerpenguins)
+
+## The basics of the ggplot = the dataframe
+
+*Note: I originally used the `iris` dataset, published by Ronald Fisher in the Annals of Eugenics in 1936. While the data themselves pertain to flowers, we cannot strip this data of it's context, And given the joyous alternative of penguins and many others (use `data()` to check out all the other datasets available that are not `iris`), this is an easy thing to do.* 
+
 ```{r}
-head(iris)
+data()
 ```
 
 ## The basics of the ggplot = the dataframe
 - A dataframe where each row corresponds to a record ('wide format') and variables are columns
 ```{r}
-ggplot(data = iris)
+ggplot(data = penguins)
 ```
   
   **Creates a blank plot. We need to decide what variables we want to plot.**
@@ -52,16 +64,16 @@ ggplot(data = iris)
 ## The basics of the ggplot = the aes
 - aes = the aesthetics.
 ```{r}
-head(iris)
+head(penguins)
 ```
   
-  **Let's look at the relationship between the variables Sepal.Length and Sepal.Width.**
+  **Let's look at the relationship between the variables `bill_length_mm` and `bill_depth_mm`.**
 
 ## The basics of the ggplot = the aes
 - aes = the aesthetics (what we want to plot)
 ```{r}
-## Let's try the Sepal.Length vs. the Sepal.Width (x, y plot)
-ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width)) 
+## Let's try the bill_length_mm vs. the bill_depth_mm (x, y plot)
+ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) 
 ```
   
   **Still blank! We need to decide what kind of plot to use.**
@@ -69,7 +81,7 @@ ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width))
 ## How do we figure out what kind of plot to use?
 **We need to think about how best to visualize this data.**
 ```{r}
-summary(iris)
+summary(penguins)
 ```
 
 ## How do we figure out what kind of plot to use?
@@ -78,19 +90,19 @@ summary(iris)
 Quick excercise: try drawing with pen and paper what you think these plots might look like: 
   
   
-- Relationship between Sepal.Length and Sepal.Width 
-- Distribution of Petal.Length
-- Comparing the means of Sepal.Length by Species
+- Relationship between `bill_length_mm` and `bill_depth_mm`
+- Distribution of `bill_length_mm`
+- Comparing the means of `bill_length_mm` by `species`
 
 ## How do we figure out what kind of plot to use?
-** We need to think about what we want to show.**
+**We need to think about what we want to show.**
 
 Quick excercise: try drawing with pen and paper what you think these plots might look like:
   
   
-- Relationship between Sepal.Length and Sepal.Width 
-- Distribution of Petal.Length
-- Comparing the means of Sepal.Length by Species
+- Relationship between `bill_length_mm` and `bill_depth_mm`
+- Distribution of `bill_length_mm`
+- Comparing the means of `bill_length_mm` by `species`
 
 **Hint** 
 Here are the options: Histogram - XY Scatter plot - Boxplot.
@@ -105,13 +117,13 @@ Here are the options: Histogram - XY Scatter plot - Boxplot.
   - geom_col/geom_bar
   - geom_line (timeseries)
   - geom_tile (heatmaps)
-  - geom_polygon (mapping)
+  - geom_polygon/geom_sf() (mapping)
 
 
 ## geom_point: XY Relationship
 ```{r}
 ## add the geom that we want
-ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_point()
 ```
   
@@ -121,7 +133,7 @@ ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width)) +
 **Using color, we want to differentiate the points by species.**
 ```{r}
 ## 
-ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
   geom_point()
 ```
   
@@ -137,7 +149,7 @@ ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
 **Now try it with shape and fill.**
 ```{r}
 ## 
-ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, shape = Species)) +
+ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm, shape = species)) +
   geom_point()
 ```
   
@@ -147,7 +159,7 @@ ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, shape = Species)) +
 - Outside aes
 ```{r}
 ## try it outside
-ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width), color = Species) +
+ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm), color = species) +
   geom_point()
 ```
 
@@ -155,7 +167,7 @@ ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width), color = Species) +
 - As part of geom
 ```{r}
 ## add it to the geom 
-ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_point(color = "red")
 
 ```
@@ -164,8 +176,7 @@ ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width)) +
 - Inside aes = the way to specify an aesthetic by a variable in the dataframe.
 ```{r}
 ## 
-ggplot(data = iris, aes(x = Sepal.Length, 
-                        y = Sepal.Width, color = Species)) +
+ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
   geom_point()
 ```
   
@@ -174,8 +185,7 @@ ggplot(data = iris, aes(x = Sepal.Length,
 ## Going a bit further: comparing means
 ```{r}
 ## 
-ggplot(data = iris, aes(x = Species, 
-                        y = Sepal.Width)) +
+ggplot(data = penguins, aes(x = species, y = bill_depth_mm)) +
   geom_boxplot()
 ```
   
@@ -184,7 +194,7 @@ ggplot(data = iris, aes(x = Species,
 ##  Going a bit further: distributions
 ```{r}
 ## The histogram
-ggplot(data = iris, aes(x = Sepal.Length)) +
+ggplot(data = penguins, aes(x = bill_depth_mm)) +
   geom_histogram()
 ```
   
@@ -193,14 +203,14 @@ ggplot(data = iris, aes(x = Sepal.Length)) +
 ##  Going a bit further: distributions by categorical variable
 ```{r}
 ## The histogram
-ggplot(data = iris, aes(x = Sepal.Length, fill = Species)) +
+ggplot(data = penguins, aes(x = bill_depth_mm, fill = species)) +
     geom_histogram(binwidth = 0.25)
 ```
 
 ##  Going a bit further: distributions by categorical variable
 ```{r}
 ## The density plot
-ggplot(data = iris, aes(x = Sepal.Length, fill = Species)) +
+ggplot(data = penguins, aes(x = bill_depth_mm, fill = species)) +
   geom_density()
 ```
 
@@ -208,23 +218,23 @@ ggplot(data = iris, aes(x = Sepal.Length, fill = Species)) +
 - If we want to split this plot by species to make it easier to see the distributions
 ```{r}
 ## By fill
-ggplot(data = iris, aes(x = Sepal.Length, fill = Species)) +
+ggplot(data = penguins, aes(x = bill_depth_mm, fill = species)) +
   geom_histogram(binwidth = 0.25)
 ```
 
 ## Going a bit further: creating multiple plots with facetting
 ```{r}
 ## By facetting
-ggplot(data = iris, aes(x = Sepal.Length)) +
+ggplot(data = penguins, aes(x = bill_depth_mm)) +
   geom_histogram(binwidth = 0.25) +
-  facet_wrap(~ Species)
+  facet_wrap(~ species)
 ```
 
 ## Customizing our ggplot
 - We'll save our ggplot as an object called base.
   
 ```{r}
-base <- ggplot(data = iris, aes(x = Species, y = Sepal.Length, color = Species)) +
+base <- ggplot(data = penguins, aes(x = species, y = bill_depth_mm, color = species)) +
   geom_boxplot()
 ```
 
@@ -233,16 +243,16 @@ base <- ggplot(data = iris, aes(x = Species, y = Sepal.Length, color = Species))
   
 ```{r}
 base +
-  xlab("Sepal Length") +
-  ylab("Sepal Width")
+  xlab("Species") +
+  ylab("Bill Depth")
 ```
 
 ## Customizing: color scales
 ```{r}
 base +
-  xlab("Sepal Length") +
-  ylab("Sepal Width") +
-  scale_color_manual(values = c("purple", "blue", "lightblue"), name = "Species of Iris")
+  xlab("Species") +
+  ylab("Bill depth") +
+  scale_color_manual(values = c("purple", "blue", "lightblue"), name = "Species of Penguin")
 ```
 
 ## Customizing: color scales
@@ -261,11 +271,11 @@ base +
 
 ## Saving our plots
 ```{r}
-base <- ggplot(data = iris, aes(x = Species, y = Sepal.Width, color = Species)) +
+base <-  ggplot(data = penguins, aes(x = species, y = bill_depth_mm, color = species)) +
   geom_boxplot() + 
-  xlab("Sepal Length") +
-  ylab("Sepal Width") +
-  scale_color_manual(values = c("purple", "blue", "pink"), name = "Species of Iris") +
+  xlab("Species") +
+  ylab("Bill depth") +
+  scale_color_manual(values = c("purple", "blue", "lightblue"), name = "Species of Penguin") +
   theme_bw()
 
 ggsave("base_plot.pdf", base, device = "pdf")
@@ -277,7 +287,7 @@ ggsave("base_plot.pdf", base, device = "pdf")
 ## Other considerations: communicating accurately and effectively
 - Anscombe's quartet
   - Identical means, variance, and correlation, but when you plot it you see the differences.
-```{r  out.width = "50%", echo = FALSE, fig.align='center'}
+```{r  out.width = "50%", echo = FALSE, fig.align='left'}
 include_graphics("figs/anscombe.png")
 ```
 
@@ -305,7 +315,7 @@ include_graphics("figs/axes_shouldzero.png")
 include_graphics("figs/axes_shouldnozero.jpeg")
 ```
 
-## Excercises
+## Exercises
 - Using the RxP data, plot:
   - The distribution of Snout-vent length at emergence (SVL.initial)
   - The correlation between Snout-vent length at emergence and at the end of the experiment (SVL.initial and SVL.final)
@@ -327,3 +337,5 @@ include_graphics("figs/axes_shouldnozero.jpeg")
 - [Anscombe's Quartet from Chapter 1: Look at Data; in Data Vizualization: a practical introduction](https://socviz.co/lookatdata.html)
 - [Florence Nightengale's Polar-Area Diagram](https://www.agnesscott.edu/lriddle/women/nightpiechart.htm)
 - [Figures on misleading axes](https://callingbullshit.org/tools/tools_misleading_axes.html)
+- [Palmer Penguins by Allison Horst]((https://github.com/allisonhorst/palmerpenguins)
+)
